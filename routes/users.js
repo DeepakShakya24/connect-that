@@ -3,12 +3,13 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const validator = require("validator");
+const { forwardAuthenticated } = require("../config/isAuth");
 
-router.get("/login", (req, res) => {
+router.get("/login", forwardAuthenticated, (req, res) => {
   res.render("login");
 });
 
-router.get("/register", (req, res) => {
+router.get("/register", forwardAuthenticated, (req, res) => {
   res.render("register");
 });
 

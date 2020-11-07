@@ -1,7 +1,10 @@
 const router = require("express").Router();
-const { ensureAuthenticated } = require("../config/isAuth");
+const {
+  ensureAuthenticated,
+  forwardAuthenticated,
+} = require("../config/isAuth");
 
-router.get("/", (req, res) => {
+router.get("/", forwardAuthenticated, (req, res) => {
   res.render("welcome");
 });
 
