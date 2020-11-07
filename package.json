@@ -1,0 +1,28 @@
+{
+    "name": "passportauthentication",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app",
+        "dev": "nodemon app"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "connect-flash": "^0.1.1",
+        "dotenv": "^8.2.0",
+        "ejs": "^2.6.1",
+        "express": "^4.16.4",
+        "express-ejs-layouts": "^2.5.0",
+        "express-session": "^1.17.1",
+        "mongoose": "^5.10.13",
+        "passport": "^0.4.1",
+        "passport-local": "^1.0.0",
+        "validators": "^0.3.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.6"
+    }
+}
