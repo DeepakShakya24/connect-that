@@ -1,5 +1,41 @@
-<h1 class="mt-4">Dashboard</h1>
-<p class="lead mb-3">Welcome
-    <%=name%>
-</p>
-<a href="/users/logout" class="btn btn-secondary">Logout</a>
+<link rel="stylesheet" href="css/style.css" />
+<div class="col-md-12" align="right">
+    <div class="content" style="text-align: center;"></div>
+
+    <h5 class="">Welcome
+        <%=name%>
+    </h5>
+    <a href="/users/logout" class="btn btn-secondary">Logout</a>
+</div>
+</div>
+
+<body class="bg">
+    <div class="join-container" style="background-color: #6d95c0; border-radius: 2em">
+        <header class="join-header">
+            <h1 class="clr-pr">Connect That <i class="fas fa-smile-wink"></i></h1>
+            <br />
+            <hr />
+        </header>
+        <main class="join-main">
+            <form action="chat.html">
+                <div class="form-control">
+                    <label for="username" class="clr-pr">Username</label>
+                    <input class=" " type="text" name="username" id="username" placeholder="Enter username..." required />
+                </div>
+                <div class="form-control">
+                    <label for="room" class="clr-pr">Room</label>
+                    <select name="room" id="room" class=" ">
+            <option value=""></option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="Python">Python</option>
+            <option value="PHP">PHP</option>
+            <option value="C#">C#</option>
+            <option value="Ruby">Ruby</option>
+            <option value="Java">Java</option>
+          </select>
+                </div>
+                <button type="submit" class="btn clr">Join Chat</button>
+            </form>
+        </main>
+    </div>
+</body>

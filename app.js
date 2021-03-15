@@ -6,10 +6,75 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const passport = require("passport");
 const Auth = require("./config/passport");
+const path = require("path");
+const http = require("http");
+const socketio = require("socket.io");
+const formatMessage = require("./utils/messages");
+const {
+  userJoin,
+  getCurrentUser,
+  userLeave,
+  getRoomUsers,
+} = require("./utils/users");
 
 dotenv.config({ path: "./config/config.env" });
 
 const app = express();
+const server = http.createServer(app);
+const io = socketio(server);
+
+const botName = "Connect That Bot - ";
+
+// Run when client connects
+io.on("connection", (socket) => {
+  socket.on("joinRoom", ({ username, room }) => {
+    const user = userJoin(socket.id, username, room);
+
+    socket.join(user.room);
+
+    // Welcome current user
+    socket.emit("message", formatMessage(botName, "Welcome to Chat Room !"));
+
+    // Broadcast when a user connects
+    socket.broadcast
+      .to(user.room)
+      .emit(
+        "message",
+        formatMessage(botName, `${user.username} has joined the chat`)
+      );
+
+    // Send users and room info
+    io.to(user.room).emit("roomUsers", {
+      room: user.room,
+      users: getRoomUsers(user.room),
+    });
+  });
+
+  // Listen for chatMessage
+  socket.on("chatMessage", (msg) => {
+    const user = getCurrentUser(socket.id);
+
+    io.to(user.room).emit("message", formatMessage(user.username, msg));
+  });
+
+  // Runs when client disconnects
+  socket.on("disconnect", () => {
+    const user = userLeave(socket.id);
+
+    if (user) {
+      io.to(user.room).emit(
+        "message",
+        formatMessage(botName, `${user.username} has left the chat`)
+      );
+
+      // Send users and room info
+      io.to(user.room).emit("roomUsers", {
+        room: user.room,
+        users: getRoomUsers(user.room),
+      });
+    }
+  });
+});
 
 Auth(passport);
 
@@ -47,7 +112,8 @@ app.use((req, res, next) => {
 //Routes
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
+app.use(express.static(path.join(__dirname, "public")));
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, console.log(`Server is running on ${PORT}`));
+server.listen(PORT, console.log(`Server is running on ${PORT}`));

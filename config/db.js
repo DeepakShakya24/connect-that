@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const db='mongodb://mongo:27017/UserData'
+const db = require("./keys").MONGO_URI;
 
 const connectDB = async () => {
   try {
